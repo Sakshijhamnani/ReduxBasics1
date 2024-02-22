@@ -1,19 +1,42 @@
-  import {createStore}  from 'redux';
+import {createStore}  from 'redux';
+import { createSlice,configureStore } from '@reduxjs/toolkit';
+import { useNavigate } from 'react-router';
 
-  const counterReducer=(state={counter:0},action)=>{
-    if(action.type==='increment'){
-        return {
-            counter:state.counter+2
-        }
-    }
-    if(action.type==='decrement'){
-        return {
-            counter:state.counter-2
-        }
-    }
-    return state;
-  }
+   
 
-  const store=createStore(counterReducer);
+  const initialState={counter:0,showCounter:true,isAuthencated:false}
+
+ 
+
+  const counterSlice=createSlice({
+    
+    name:'counter',
+    initialState,
+    reducers:{
+        increment(state) {
+            state.counter++
+        },
+        decrement(state) {
+            state.counter-- 
+        },
+        increaseCounter(state,action) {
+            state.counter=state.counter+action.payload
+        },
+        toggleCounter(state) {
+           state.showCounter=!state.showCounter 
+        } ,
+        AuthenticationHandler(state){
+          state.isAuthencated=!state.isAuthencated
+        }  
+      }
+  })
+
+  
+
+  const store=configureStore({
+    reducer:counterSlice.reducer
+  });
+
+  export const {increment,decrement,increaseCounter,toggleCounter,AuthenticationHandler}=counterSlice.actions 
 
   export default store;
